@@ -1,22 +1,21 @@
 #!/bin/bash
 
-
 _get_ziplink () {
     local regex
     regex='(https?)://github.com/.+/.+'
-    if [[ $UPSTREAM_REPO == "jepthoniq" ]]
+    if [[ $UPSTREAM_REPO == "Abod20112011" ]]  
     then
-        echo "aHR0cHM6Ly9naXRodWIuY29tL2plcHRob25pcS9qZXB0aG9uL2FyY2hpdmUvSHVSZS56aXA=" | base64 -d
+        echo "aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9qZXB0aG9uL2FyY2hpdmUvSHVSZS56aXA=" | base64 -d
     elif [[ $UPSTREAM_REPO =~ $regex ]]
     then
         if [[ $UPSTREAM_REPO_BRANCH ]]
         then
             echo "${UPSTREAM_REPO}/archive/${UPSTREAM_REPO_BRANCH}.zip"
         else
-            echo "${UPSTREAM_REPO}/archive/HuRe.zip"
+            echo "${UPSTREAM_REPO}/archive/HuRe.zip"  
         fi
     else
-        echo "aHR0cHM6Ly9naXRodWIuY29tL2plcHRob25pcS9qZXB0aG9uL2FyY2hpdmUvSHVSZS56aXA=" | base64 -d
+        echo "aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9qZXB0aG9uL2FyY2hpdmUvSHVSZS56aXA=" | base64 -d
     fi
 }
 
@@ -24,18 +23,17 @@ _get_repolink () {
     local regex
     local rlink
     regex='(https?)://github.com/.+/.+'
-    if [[ $UPSTREAM_REPO == "jepthoniq" ]]
+    if [[ $UPSTREAM_REPO == "Abod20112011" ]]  
     then
-        rlink=`echo "aHR0cHM6Ly9naXRodWIuY29tL2plcHRob25pcS9qZXB0aG9uLmdpdA==" | base64 -d`
+        rlink=`echo "aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9qZXB0aG9uLmdpdA==" | base64 -d`
     elif [[ $UPSTREAM_REPO =~ $regex ]]
     then
         rlink=`echo "${UPSTREAM_REPO}"`
     else
-        rlink=`echo "aHR0cHM6Ly9naXRodWIuY29tL2plcHRob25pcS9qZXB0aG9uLmdpdA==" | base64 -d`
+        rlink=`echo "aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9qZXB0aG9uLmdpdA==" | base64 -d`
     fi
     echo "$rlink"
 }
-
 
 _run_python_code() {
     python3${pVer%.*} -c "$1"
@@ -44,8 +42,8 @@ _run_python_code() {
 _run_catpack_git() {
     $(_run_python_code 'from git import Repo
 import sys
-OFFICIAL_UPSTREAM_REPO = "https://github.com/jepthoniq/jepthon"
-ACTIVE_BRANCH_NAME = "HuRe"
+OFFICIAL_UPSTREAM_REPO = "https://github.com/Abod20112011/jepthon"  
+ACTIVE_BRANCH_NAME = "HuRe"  
 repo = Repo.init()
 origin = repo.create_remote("temponame", OFFICIAL_UPSTREAM_REPO)
 origin.fetch()
@@ -58,7 +56,7 @@ _run_cat_git() {
     $(_run_python_code 'from git import Repo
 import sys
 OFFICIAL_UPSTREAM_REPO="'$repolink'"
-ACTIVE_BRANCH_NAME = "'$UPSTREAM_REPO_BRANCH'" or "HuRe"
+ACTIVE_BRANCH_NAME = "'$UPSTREAM_REPO_BRANCH'" or "HuRe"  
 repo = Repo.init()
 origin = repo.create_remote("temponame", OFFICIAL_UPSTREAM_REPO)
 origin.fetch()
@@ -85,9 +83,8 @@ _set_bot () {
     chmod -R 755 bin
     echo "    بدء تنزيل بيانات الجوكر    "
     echo "
-
     "
-    python3 -m JoKeRUB
+    python3 -m JoKeRUB  # الإبقاء على JoKeRUB
 }
 
 _set_bot

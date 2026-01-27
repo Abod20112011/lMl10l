@@ -3,7 +3,7 @@
   "description": "اللهم صلِ على محمد وآل محمد",
   "logo": "https://i.ibb.co/wcW2S4d/Ephoto360-com-163942f57f3305.jpg",
   "keywords": ["plugin", "modular", "productivity"],
-  "repository": "https://github.com/jepthoniq/lMl10l/",
+  "repository": "https://github.com/Abod20112011/lMl10l/",
   "website": "#TODO",
   "success_url": "#TODO",
   "env": {
@@ -55,16 +55,16 @@
   }],
   "buildpacks": [
     {
-      "url": "https://github.com/jepthoniq/heroku-buildpack-ffmpeg-latest"
+      "url": "https://github.com/heroku/heroku-buildpack-apt"
     },
     {
-      "url": "https://github.com/riganf/heroku-buildpack-p7zip"
+      "url": "https://github.com/jepthoniq/heroku-buildpack-ffmpeg-latest"
     },
     {
       "url": "https://github.com/rahulps1000/heroku-buildpack-nodejs"
     },
     {
-      "url": "https://github.com/heroku/heroku-buildpack-apt.git"
+      "url": "https://github.com/riganf/heroku-buildpack-p7zip"
     },
     {
       "url": "heroku/python"

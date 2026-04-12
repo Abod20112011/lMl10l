@@ -1,36 +1,21 @@
-FROM python:3.9-slim-buster
-
-# منع التفاعل أثناء التثبيت
+FROM debian:11
 ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get -y install \
+    python3 python3-dev python3-dev python3-pip python3-venv 
 
-# تثبيت متطلبات النظام والميديا (وحل مشكلة lxml و Wand)
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-    git \
-    curl \
-    ffmpeg \
-    mediainfo \
-    unzip \
-    wget \
-    libxml2-dev \
-    libxslt1-dev \
-    zlib1g-dev \
-    libjpeg-dev \
-    libpng-dev \
-    libwebp-dev \
-    libmagickwand-dev \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
-
-# تحديد مسار العمل
+RUN apt-get install git curl python3-pip ffmpeg -y
+RUN apt-get install git curl python3-pip mediainfo -y
+RUN apt-get install git curl python3-pip p7zip-full -y
+RUN apt-get update \
+    && apt-get install -y unzip wget
+ARG USER=root
+USER $USER
+RUN python3 -m venv venv
 WORKDIR /app
-
-# نسخ كافة ملفات السورس إلى داخل الحاوية
-COPY . .
-
-# تحديث pip وتثبيت المكتبات المطلوبة من ملف requirements.txt
-RUN pip3 install --no-cache-dir --upgrade pip
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-# أمر التشغيل الأساسي للموديول JoKeRUB
-CMD ["python3", "-m", "JoKeRUB"]
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
+COPY . /app/
+WORKDIR /app/
+RUN pip3 install --upgrade pip
+RUN pip3 install -U pip && pip3 install -U -r requirements.txt
+CMD ["bash", "start"]

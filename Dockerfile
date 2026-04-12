@@ -3,7 +3,7 @@ FROM python:3.9-slim-buster
 # منع التفاعل أثناء التثبيت
 ARG DEBIAN_FRONTEND=noninteractive
 
-# تثبيت متطلبات النظام والميديا (بما في ذلك حل مشكلة lxml)
+# تثبيت متطلبات النظام والميديا (وحل مشكلة lxml و Wand)
 RUN apt-get update && apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
     git \
@@ -25,10 +25,12 @@ RUN apt-get update && apt-get upgrade -y && \
 # تحديد مسار العمل
 WORKDIR /app
 
-# نسخ الملفات وتثبيت مكتبات بايثون مباشرة
+# نسخ كافة ملفات السورس إلى داخل الحاوية
 COPY . .
+
+# تحديث pip وتثبيت المكتبات المطلوبة من ملف requirements.txt
 RUN pip3 install --no-cache-dir --upgrade pip
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# أمر التشغيل الأساسي (تأكد أن الملف هو start.py أو عدله حسب موديول سورس جيمثون)
-CMD ["python3", "-m", "jepthon"]
+# أمر التشغيل الأساسي للموديول JoKeRUB
+CMD ["python3", "-m", "JoKeRUB"]

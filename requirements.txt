@@ -12,6 +12,7 @@ cloudscraper
 pymongo[srv]
 speechrecognition
 cowpy
+fontTools
 colour
 cryptg
 csvfaker

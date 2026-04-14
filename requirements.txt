@@ -12,7 +12,6 @@ cloudscraper
 pymongo[srv]
 speechrecognition
 cowpy
-fontTools
 colour
 cryptg
 csvfaker
@@ -79,3 +78,4 @@ ujson
 git+https://github.com/buddhhu/img2html.git
 git+https://github.com/alexmercerind/youtube-search-python
 git+https://github.com/cinemagoer/cinemagoer
+httpx==0.13.3

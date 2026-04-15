@@ -17,7 +17,6 @@ cryptg
 csvfaker
 fontTools
 emoji==1.7.0
-httpx[http2]
 fonttools
 geopy
 gitpython

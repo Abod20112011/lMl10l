@@ -1,12 +1,18 @@
 #!/bin/bash
 
+# تشفير روابط مستودعك الجديد: Abod20112011/lMl10l
+# رابط الـ ZIP المباشر
+# aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9sTWwxMGwvYXJjaGl2ZS9tYXN0ZXIuemlw
+# رابط الـ Git
+# aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9sTWwxMGwuZ2l0
 
 _get_ziplink () {
     local regex
     regex='(https?)://github.com/.+/.+'
-    if [[ $UPSTREAM_REPO == "jepthoniq" ]]
+    if [[ $UPSTREAM_REPO == "jepthoniq" ]] || [[ -z $UPSTREAM_REPO ]]
     then
-        echo "aHR0cHM6Ly9naXRodWIuY29tL2plcHRob25pcS9qZXB0aG9uL2FyY2hpdmUvbWFzdGVyLnppcA==" | base64 -d
+        # هذا هو رابط السورس الخاص بك مشفراً (lMl10l)
+        echo "aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9sTWwxMGwvYXJjaGl2ZS9tYXN0ZXIuemlw" | base64 -d
     elif [[ $UPSTREAM_REPO =~ $regex ]]
     then
         if [[ $UPSTREAM_REPO_BRANCH ]]
@@ -16,7 +22,7 @@ _get_ziplink () {
             echo "${UPSTREAM_REPO}/archive/master.zip"
         fi
     else
-        echo "aHR0cHM6Ly9naXRodWIuY29tL2plcHRob25pcS9qZXB0aG9uL2FyY2hpdmUvbWFzdGVyLnppcA==" | base64 -d
+        echo "aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9sTWwxMGwvYXJjaGl2ZS9tYXN0ZXIuemlw" | base64 -d
     fi
 }
 
@@ -24,69 +30,82 @@ _get_repolink () {
     local regex
     local rlink
     regex='(https?)://github.com/.+/.+'
-    if [[ $UPSTREAM_REPO == "jepthoniq" ]]
+    if [[ $UPSTREAM_REPO == "jepthoniq" ]] || [[ -z $UPSTREAM_REPO ]]
     then
-        rlink=`echo "aHR0cHM6Ly9naXRodWIuY29tL2plcHRob25pcS9qZXB0aG9uLmdpdA==" | base64 -d`
+        # رابط Git الخاص بك مشفراً
+        rlink=`echo "aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9sTWwxMGwuZ2l0" | base64 -d`
     elif [[ $UPSTREAM_REPO =~ $regex ]]
     then
         rlink=`echo "${UPSTREAM_REPO}"`
     else
-        rlink=`echo "aHR0cHM6Ly9naXRodWIuY29tL2plcHRob25pcS9qZXB0aG9uLmdpdA==" | base64 -d`
+        rlink=`echo "aHR0cHM6Ly9naXRodWIuY29tL0Fib2QyMDExMjAxMS9sTWwxMGwuZ2l0" | base64 -d`
     fi
     echo "$rlink"
 }
 
-
 _run_python_code() {
-    python3${pVer%.*} -c "$1"
+    python3 -c "$1"
 }
 
 _run_catpack_git() {
-    $(_run_python_code 'from git import Repo
-import sys
-OFFICIAL_UPSTREAM_REPO = "https://github.com/jepthoniq/jepthon"
-ACTIVE_BRANCH_NAME = "master"
-repo = Repo.init()
-origin = repo.create_remote("temponame", OFFICIAL_UPSTREAM_REPO)
-origin.fetch()
-repo.create_head(ACTIVE_BRANCH_NAME, origin.refs[ACTIVE_BRANCH_NAME])
-repo.heads[ACTIVE_BRANCH_NAME].checkout(True) ')
+    # تم إضافة سطر لحذف الريموت القديم لتجنب خطأ "already exists"
+    $(_run_python_code 'from git import Repo; import os; \
+OFFICIAL_UPSTREAM_REPO = "https://github.com/Abod20112011/lMl10l"; \
+ACTIVE_BRANCH_NAME = "master"; \
+repo = Repo.init(); \
+if "temponame" in [r.name for r in repo.remotes]: repo.delete_remote("temponame"); \
+origin = repo.create_remote("temponame", OFFICIAL_UPSTREAM_REPO); \
+origin.fetch(); \
+repo.create_head(ACTIVE_BRANCH_NAME, origin.refs[ACTIVE_BRANCH_NAME]); \
+repo.heads[ACTIVE_BRANCH_NAME].checkout(True)')
 }
 
 _run_cat_git() {
     local repolink=$(_get_repolink)
-    $(_run_python_code 'from git import Repo
-import sys
-OFFICIAL_UPSTREAM_REPO="'$repolink'"
-ACTIVE_BRANCH_NAME = "'$UPSTREAM_REPO_BRANCH'" or "master"
-repo = Repo.init()
-origin = repo.create_remote("temponame", OFFICIAL_UPSTREAM_REPO)
-origin.fetch()
-repo.create_head(ACTIVE_BRANCH_NAME, origin.refs[ACTIVE_BRANCH_NAME])
-repo.heads[ACTIVE_BRANCH_NAME].checkout(True) ')
+    $(_run_python_code 'from git import Repo; import os; \
+OFFICIAL_UPSTREAM_REPO="'$repolink'"; \
+ACTIVE_BRANCH_NAME = "'$UPSTREAM_REPO_BRANCH'" or "master"; \
+repo = Repo.init(); \
+if "temponame" in [r.name for r in repo.remotes]: repo.delete_remote("temponame"); \
+origin = repo.create_remote("temponame", OFFICIAL_UPSTREAM_REPO); \
+origin.fetch(); \
+repo.create_head(ACTIVE_BRANCH_NAME, origin.refs[ACTIVE_BRANCH_NAME]); \
+repo.heads[ACTIVE_BRANCH_NAME].checkout(True)')
 }
 
 _set_bot () {
     local zippath
     zippath="jepthon.zip"
-    echo "جاري تنزيل اكواد السورس "
+    echo "جاري تنزيل اكواد السورس الخاص بعبود..."
     wget -q $(_get_ziplink) -O "$zippath"
+    
+    if [ ! -f "$zippath" ]; then
+        echo "خطأ: فشل تحميل ملف السورس!"
+        exit 1
+    fi
+
     echo " تفريغ البيانات "
-    CATPATH=$(zipinfo -1 "$zippath" | grep -v "/.");
+    # تحديد اسم المجلد الناتج عن فك الضغط تلقائياً
     unzip -qq "$zippath"
+    CATPATH=$(ls -d */ | grep "lMl10l" | head -n 1)
+    
     echo " تم التفريغ "
     echo " يتم التنظيف "
     rm -rf "$zippath"
-    sleep 5
+    
     _run_catpack_git
-    cd $CATPATH
+    cd "$CATPATH" || exit
     _run_cat_git
-    python3 ../setup/updater.py ../requirements.txt requirements.txt
-    chmod -R 755 bin
-    echo "    بدء تنزيل بيانات الجوكر    "
-    echo "
-
-    "
+    
+    # تحديث المتطلبات بشكل منفصل كما تفضل
+    if [ -f "../requirements.txt" ]; then
+        python3 ../setup/updater.py ../requirements.txt requirements.txt
+    fi
+    
+    [ -d "bin" ] && chmod -R 755 bin
+    
+    echo "    بدء تشغيل سورس عبود (lMl10l)    "
+    # تأكد أن اسم الموديول داخل سورس lMl10l هو jepthon أو قم بتغييره هنا
     python3 -m jepthon
 }
 
